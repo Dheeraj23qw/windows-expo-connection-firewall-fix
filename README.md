@@ -1,149 +1,55 @@
+### Windows Firewall and Expo Connection Timeout Guide
 
-
-```md
-# Windows Firewall & Expo Connection Timeout Fix (Node.js / AVG / Avast)
-
-If your terminal is running fine but your phone times out when connecting to Expo or a local dev server, the issue is often a hidden firewall block — especially caused by AVG or Avast overriding Windows Firewall rules.
-
-This guide explains how to fix:
-
-- Hidden firewall blocks
-- AVG / Avast Enhanced Firewall conflicts
-- Node.js inbound rule issues
-- Expo SDK 54+ deep linking (scheme) issue
+If your terminal runs correctly but your phone cannot connect to your Expo development server, the issue is likely a firewall restriction. This occurs frequently with Windows Defender or third-party antivirus software like AVG and Avast.
 
 ---
 
-## 1️⃣ Hidden Firewall Block (Windows)
+### 1. Windows Firewall Settings
 
-If:
-- `npx expo start` runs fine
-- QR code scans
-- But the phone says **"Connection Timed Out"**
+Windows may silently block Node.js from communicating with your mobile device.
 
-👉 This usually means Windows Firewall is blocking Node.js silently.
-
-### Fix:
-
-1. Open:
-```
-
-Windows Defender Firewall with Advanced Security
-
-```
-
-2. Click:
-```
-
-Inbound Rules
-
-```
-
-3. Find:
-```
-
-Node.js
-
-```
-
-4. If you see a **Red circle with slash icon**:
-- Right-click → **Properties**
-- Select → **Allow the connection**
-- Apply & Save
-
-Restart Expo after this.
+1. Open **Windows Defender Firewall with Advanced Security**.
+2. Select **Inbound Rules**.
+3. Locate all entries named **Node.js**.
+4. If an entry has a red icon, right-click it and select **Properties**.
+5. Set the action to **Allow the connection**.
+6. Save the changes and restart Expo.
 
 ---
 
-## 2️⃣ AVG / Avast Firewall Trap (Very Common)
+### 2. AVG or Avast Firewall Conflict
 
-AVG & Avast override Windows Firewall even if Windows shows "Allowed".
+Antivirus software often overrides Windows settings. Even if Windows allows the connection, these programs may still block it.
 
-### Fix:
-
-1. Open AVG / Avast Dashboard
-2. Go to:
-```
-
-Menu → Settings → Protection → Enhanced Firewall
-
-```
-3. Turn OFF:
-```
-
-Enhanced Firewall
-
-```
-OR
-4. Add:
-```
-
-node.exe
-
-````
-to Allowed Apps inside AVG
-
-⚠️ Simply allowing in Windows Firewall is NOT enough if AVG firewall is active.
+1. Open the AVG or Avast dashboard.
+2. Navigate to **Menu > Settings > Protection > Enhanced Firewall**.
+3. Either disable the **Enhanced Firewall** temporarily or add **node.exe** to the **Allowed Apps** list.
 
 ---
 
-## 3️⃣ Expo SDK 54+ Scheme Fix (Deep Linking Failure)
+### 3. Expo SDK 54+ Configuration
 
-If you're using SDK 54+, and your app fails to open from Expo Go:
+For SDK 54 and newer, you must define a scheme in your configuration for deep linking to function.
 
-Make sure your `app.json` includes:
+Update your **app.json** file:
 
 ```json
 {
-"expo": {
- "scheme": "yourappname"
+  "expo": {
+    "scheme": "your-app-name"
+  }
 }
-}
-````
-
-Without this, deep linking fails and your phone may show connection errors.
-
----
-
-## 4️⃣ Quick Checklist
-
-✅ Windows Inbound Rule → Allow Node.js
-✅ AVG / Avast Enhanced Firewall → OFF
-✅ app.json includes "scheme"
-✅ Restart PC after firewall changes
-✅ Restart Expo using:
-
-```bash
-npx expo start --clear
-```
-
----
-
-## 💡 Why This Happens
-
-* Antivirus software overrides Windows firewall
-* Node.js rule becomes blocked after update
-* Expo SDK 54 requires explicit scheme for deep linking
-* Windows network profile changes (Public vs Private)
-
----
-
-## 📌 Tested On
-
-* Windows 10 / 11
-* Node.js 18+
-* Expo SDK 53 / 54
-* AVG Antivirus
-* Avast Antivirus
-
----
-
-## ✍️ Author
-
-Dheeraj Kumar
 
 ```
 
+---
 
-Tell me which one you want 🚀
-```
+### 4. Summary Checklist
+
+* **Inbound Rules:** Ensure Node.js is allowed in Windows Firewall.
+* **Antivirus:** Disable Enhanced Firewall in AVG or Avast.
+* **App Config:** Verify that a "scheme" is present in app.json.
+* **Restart:** Clear the cache and restart the server using:
+`npx expo start --clear`
+
+---
