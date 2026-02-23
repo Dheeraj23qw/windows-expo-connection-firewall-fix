@@ -1,14 +1,4 @@
-Here’s a clean GitHub repository structure and ready-to-use content for your topic.
 
----
-
-## 📁 Repository Name
-
-**windows-expo-connection-firewall-fix**
-
----
-
-## 📄 README.md
 
 ```md
 # Windows Firewall & Expo Connection Timeout Fix (Node.js / AVG / Avast)
