@@ -1,35 +1,33 @@
-### Windows Firewall and Expo Connection Timeout Guide
-
-If your terminal runs correctly but your phone cannot connect to your Expo development server, the issue is likely a firewall restriction. This occurs frequently with Windows Defender or third-party antivirus software like AVG and Avast.
 
 ---
 
-### 1. Windows Firewall Settings
+# How to Fix Expo Connection Timeout and Windows Firewall Errors
 
-Windows may silently block Node.js from communicating with your mobile device.
+If your Expo terminal runs but your phone cannot connect to the local development server, you are likely experiencing a firewall block. This guide provides solutions for Windows Defender, AVG, and Avast.
 
-1. Open **Windows Defender Firewall with Advanced Security**.
-2. Select **Inbound Rules**.
-3. Locate all entries named **Node.js**.
-4. If an entry has a red icon, right-click it and select **Properties**.
-5. Set the action to **Allow the connection**.
-6. Save the changes and restart Expo.
+## 1. Fix Windows Firewall Blocking Node.js
 
----
+Windows Defender Firewall often blocks Node.js inbound connections by default, preventing your phone from reaching the server.
 
-### 2. AVG or Avast Firewall Conflict
+1. Search for **Windows Defender Firewall with Advanced Security**.
+2. Click on **Inbound Rules** in the left sidebar.
+3. Scroll to find all entries named **Node.js**.
+4. If an entry shows a red icon, right-click it and select **Properties**.
+5. Select **Allow the connection** and click **Apply**.
+6. Restart your Expo server.
 
-Antivirus software often overrides Windows settings. Even if Windows allows the connection, these programs may still block it.
+## 2. Resolve AVG and Avast Firewall Conflicts
 
-1. Open the AVG or Avast dashboard.
+Third-party antivirus software like AVG or Avast often overrides Windows settings. Even if Windows allows the connection, these programs may block it.
+
+1. Open your **AVG** or **Avast** dashboard.
 2. Navigate to **Menu > Settings > Protection > Enhanced Firewall**.
-3. Either disable the **Enhanced Firewall** temporarily or add **node.exe** to the **Allowed Apps** list.
+3. Either turn off **Enhanced Firewall** or add **node.exe** to the **Allowed Apps** list.
+4. Restart your computer if the connection still fails.
 
----
+## 3. Expo SDK 54 Deep Linking Configuration
 
-### 3. Expo SDK 54+ Configuration
-
-For SDK 54 and newer, you must define a scheme in your configuration for deep linking to function.
+For Expo SDK 54 and higher, you must define a "scheme" in your configuration file to prevent connection errors during deep linking.
 
 Update your **app.json** file:
 
@@ -42,14 +40,15 @@ Update your **app.json** file:
 
 ```
 
----
+## 4. Troubleshooting Checklist
 
-### 4. Summary Checklist
+If the "Connection Timed Out" error persists, verify the following:
 
-* **Inbound Rules:** Ensure Node.js is allowed in Windows Firewall.
-* **Antivirus:** Disable Enhanced Firewall in AVG or Avast.
-* **App Config:** Verify that a "scheme" is present in app.json.
-* **Restart:** Clear the cache and restart the server using:
+* **Inbound Rules:** Ensure Node.js is set to "Allow" in Windows Firewall.
+* **Antivirus:** Disable the Enhanced Firewall feature in AVG or Avast.
+* **App Config:** Ensure the "scheme" property exists in your `app.json`.
+* **Network Profile:** Set your Windows Network Profile to **Private** instead of Public.
+* **Clear Cache:** Restart your project using the clear command:
 `npx expo start --clear`
 
 ---
